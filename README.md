@@ -33,10 +33,10 @@ Ensure you have the following installed:
 ### Project setup
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/renanlopescoder/kinetic-token-backend.git
-   cd kinetic-token-backend
-  ```
+```bash
+  git clone https://github.com/renanlopescoder/kinetic-token-backend.git
+  cd kinetic-token-backend
+```
 
 2. Install 
 
