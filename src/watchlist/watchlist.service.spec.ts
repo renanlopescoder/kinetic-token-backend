@@ -37,10 +37,31 @@ describe('WatchlistService', () => {
 
   describe('getWatchlist', () => {
     it('should return the watchlist for a given user', async () => {
-      const mockWatchlist = [
-        { id: '1', userId: 'user1', name: 'Bitcoin' } as Watchlist,
-        { id: '2', userId: 'user1', name: 'Ethereum' } as Watchlist,
+      const mockWatchlist: Watchlist[] = [
+        {
+          id: '1',
+          tokenId: '1',
+          name: 'Bitcoin',
+          symbol: 'BTC',
+          image: 'btc.png',
+          price_change_percentage_24h: 2.5,
+          market_cap: 1000000000,
+          current_price: 50000,
+          userId: 'user1',
+        },
+        {
+          id: '1',
+          tokenId: '1',
+          name: 'Bitcoin',
+          symbol: 'BTC',
+          image: 'btc.png',
+          price_change_percentage_24h: 2.5,
+          market_cap: 1000000000,
+          current_price: 50000,
+          userId: 'user1',
+        },
       ];
+
       jest.spyOn(watchlistRepository, 'find').mockResolvedValue(mockWatchlist);
 
       const result = await watchlistService.getWatchlist('user1');
@@ -54,7 +75,7 @@ describe('WatchlistService', () => {
 
   describe('addToWatchlist', () => {
     it('should add a token to the watchlist', async () => {
-      const mockToken = {
+      const mockCoingeckoToken = {
         id: '1',
         name: 'Bitcoin',
         symbol: 'BTC',
@@ -64,23 +85,30 @@ describe('WatchlistService', () => {
         current_price: 50000,
       } as Watchlist;
 
-      const mockSavedEntry = { ...mockToken, userId: 'user1' } as Watchlist;
+      const mockSavedEntry = {
+        ...mockCoingeckoToken,
+        userId: 'user1',
+      } as Watchlist;
 
       jest.spyOn(watchlistRepository, 'create').mockReturnValue(mockSavedEntry);
       jest.spyOn(watchlistRepository, 'save').mockResolvedValue(mockSavedEntry);
 
-      const result = await watchlistService.addToWatchlist('user1', mockToken);
+      const result = await watchlistService.addToWatchlist(
+        'user1',
+        mockCoingeckoToken,
+      );
 
       expect(watchlistRepository.create).toHaveBeenCalledWith({
-        id: '1',
-        userId: 'user1',
+        tokenId: '1',
         name: 'Bitcoin',
         symbol: 'BTC',
         image: 'btc.png',
         price_change_percentage_24h: 2.5,
         market_cap: 1000000000,
         current_price: 50000,
+        userId: 'user1',
       });
+
       expect(watchlistRepository.save).toHaveBeenCalledWith(mockSavedEntry);
       expect(result).toEqual(mockSavedEntry);
     });

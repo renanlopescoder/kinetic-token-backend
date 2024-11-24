@@ -1,9 +1,12 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Watchlist {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column()
+  tokenId: string;
 
   @Column()
   userId: string;
